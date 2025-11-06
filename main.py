@@ -9,7 +9,7 @@ WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
 POST_ID = 301020  # ID bài Spur Protocol
 TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today – November 7, 2025"
-CHECK_ANSWER = "B) SpurSwap automatically finds the best available rate across multiple liquidity sources"
+CHECK_ANSWER = "B) SpurSwap automatically finds the best available rate across multiple liquidity sources."
 
 # ================ SCRAPE SITE ================
 def scrape_quiz_site():
