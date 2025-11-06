@@ -1,0 +1,35 @@
+name: Spur Protocol Auto Updater
+
+on:
+  schedule:
+    # Chạy mỗi 20 phút trong khoảng 8h -> 11h sáng (GMT+7)
+    # GitHub Actions dùng UTC, nên 8h GMT+7 = 1h UTC
+    # 11h GMT+7 = 4h UTC
+    # => chạy mỗi 20 phút trong khung 1h-4h UTC
+    - cron: '*/20 1-4 * * *'
+  workflow_dispatch:  # Cho phép chạy thủ công
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    env:
+      WP_USERNAME: ${{ secrets.WP_USERNAME }}
+      WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+
+    steps:
+      - name: 🔁 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: 🚀 Run Spur Protocol Updater
+        run: |
+          python main.py
