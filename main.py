@@ -7,9 +7,9 @@ from bs4 import BeautifulSoup
 WP_URL = "https://blog.mexc.com/wp-json/wp/v2/posts"
 WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
-POST_ID = 304141  # ID bài Spur Protocol
-TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today – November 22, 2025"
-CHECK_ANSWER = "C) PlasmaBFT."
+POST_ID = 304392  # ID bài Spur Protocol
+TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today (Updated)"
+CHECK_ANSWER = "B) Blockchain technology."
 
 # ================ SCRAPE SITE ================
 def scrape_quiz_site():
@@ -93,7 +93,7 @@ def update_post_after_h2(target_h2_text, question, answer):
     p_tag["style"] = "font-size:17px"
 
     strong_q = soup.new_tag("strong")
-    strong_q.string = "Question:"
+    strong_q.string = "The question for November 23, 2025:"
     p_tag.append(strong_q)
     p_tag.append(f" {question}\n")
 
