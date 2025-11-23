@@ -9,7 +9,7 @@ WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
 POST_ID = 304392  # ID bài Spur Protocol
 TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today (Updated)"
-CHECK_ANSWER = "B) Blockchain technology."
+CHECK_ANSWER = "D) Honest mistakes made by regular users sending transactions."
 
 # ================ SCRAPE SITE ================
 def scrape_quiz_site():
@@ -93,7 +93,7 @@ def update_post_after_h2(target_h2_text, question, answer):
     p_tag["style"] = "font-size:17px"
 
     strong_q = soup.new_tag("strong")
-    strong_q.string = "The question for November 23, 2025:"
+    strong_q.string = "The question for November 24, 2025:"
     p_tag.append(strong_q)
     p_tag.append(f" {question}\n")
 
