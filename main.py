@@ -13,7 +13,7 @@ CHECK_ANSWER = "A) Manually or automatically, often via smart contracts."
 
 # find & replace
 OLD_DATE = "November 24"
-NEW_DATE = "November 25"
+NEW_DATE = "November 24"
 
 
 # ================ SCRAPE SITE ================
