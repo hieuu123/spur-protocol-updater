@@ -8,8 +8,13 @@ WP_URL = "https://blog.mexc.com/wp-json/wp/v2/posts"
 WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
 POST_ID = 304392  # ID bài Spur Protocol
-TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today (Updated)"
+TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today for November 24, 2025"
 CHECK_ANSWER = "D) Honest mistakes made by regular users sending transactions."
+
+# find & replace
+OLD_DATE = "November 24"
+NEW_DATE = "November 25"
+
 
 # ================ SCRAPE SITE ================
 def scrape_quiz_site():
@@ -23,7 +28,6 @@ def scrape_quiz_site():
     if not ps or len(ps) < 2:
         raise RuntimeError("❌ Không tìm thấy đủ thẻ <p class='has-text-align-left'>")
 
-    # Tìm p chứa 'Question' và 'Answer'
     question = None
     answer = None
     for p in ps:
@@ -71,14 +75,14 @@ def update_post_after_h2(target_h2_text, question, answer):
     print("✍️ Lấy content.rendered, độ dài:", len(old_content))
     soup = BeautifulSoup(old_content, "html.parser")
 
-    # 2. Tìm <h2> có text khớp
+    # 2. Tìm <h2> khớp text
     h2_tag = soup.find("h2", string=lambda t: t and target_h2_text in t)
     if not h2_tag:
         print("❌ Không tìm thấy H2 phù hợp")
         print("Rendered snippet:", old_content[:400])
         return
 
-    # 3. Xóa <p> sau H2 (hiện chứa Q/A cũ)
+    # 3. Xoá toàn bộ <p> sau H2 (đang là Q/A cũ)
     next_tag = h2_tag.find_next_sibling()
     removed = 0
     while next_tag and next_tag.name == "p":
@@ -93,7 +97,7 @@ def update_post_after_h2(target_h2_text, question, answer):
     p_tag["style"] = "font-size:17px"
 
     strong_q = soup.new_tag("strong")
-    strong_q.string = "The question for November 24, 2025:"
+    strong_q.string = f"The question for {NEW_DATE}, 2025:"
     p_tag.append(strong_q)
     p_tag.append(f" {question}\n")
 
@@ -106,22 +110,44 @@ def update_post_after_h2(target_h2_text, question, answer):
     strong_a.string = answer
     p_tag.append(strong_a)
 
-    # 5. Chèn Q/A sau H2
+    # 5. Chèn Q/A mới sau H2
     h2_tag.insert_after(p_tag)
 
-    new_content = str(soup)
+    # 6. Find & replace ngày trong content
+    new_content = str(soup).replace(OLD_DATE, NEW_DATE)
     print("[+] New content length:", len(new_content))
 
-    # 6. Update & publish
+    # ---- UPDATE CONTENT ----
     payload = {"content": new_content, "status": "publish"}
     update = requests.post(url, headers=headers, json=payload, timeout=15)
-    print("🚀 Update status:", update.status_code)
-    print("📄 Update response:", update.text[:500])
+    print("🚀 Update content status:", update.status_code)
 
-    if update.status_code == 200:
-        print("✅ Post updated & published thành công!")
+    if update.status_code != 200:
+        print("❌ Error khi update content")
+        return
+
+    print("✅ Content updated & published!")
+
+    # ============================
+    # UPDATE WP TITLE (NO SEO)
+    # ============================
+
+    updated_post = update.json()
+    current_title = updated_post.get("title", {}).get("rendered", "")
+
+    new_title = current_title.replace(OLD_DATE, NEW_DATE)
+
+    title_payload = {
+        "title": new_title
+    }
+
+    title_update = requests.post(url, headers=headers, json=title_payload, timeout=15)
+    print("📝 Update Title status:", title_update.status_code)
+
+    if title_update.status_code == 200:
+        print("✅ WP Post Title updated!")
     else:
-        print("❌ Error khi update")
+        print("⚠️ Title update failed (content still OK)")
 
 
 # ================ MAIN =================
