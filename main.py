@@ -9,11 +9,11 @@ WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
 POST_ID = 304392  # ID bài Spur Protocol
 TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today for November 24, 2025"
-CHECK_ANSWER = "A) Manually or automatically, often via smart contracts.."
+CHECK_ANSWER = "A) Manually or automatically, often via smart contracts."
 
 # find & replace
 OLD_DATE = "November 24"
-NEW_DATE = "November 24"
+NEW_DATE = "November 25"
 
 
 # ================ SCRAPE SITE ================
