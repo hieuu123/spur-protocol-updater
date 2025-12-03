@@ -8,12 +8,12 @@ WP_URL = "https://blog.mexc.com/wp-json/wp/v2/posts"
 WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
 POST_ID = 304392  # ID bài Spur Protocol
-TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today for December 2, 2025"
-CHECK_ANSWER = "A) Twitter, Reddit, Telegram, and other crypto communities."
+TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today for December 3, 2025"
+CHECK_ANSWER = "C) ERC-721."
 
 # find & replace
-OLD_DATE = "December 2"
-NEW_DATE = "December 3"
+OLD_DATE = "December 3"
+NEW_DATE = "December 4"
 
 
 # ================ SCRAPE SITE ================
