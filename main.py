@@ -8,12 +8,12 @@ WP_URL = "https://blog.mexc.com/wp-json/wp/v2/posts"
 WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
 POST_ID = 304392  # ID bài Spur Protocol
-TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today for December 11, 2025"
-CHECK_ANSWER = "A) It was created in 1934 after the 1929 crash to restore market confidence.."
+TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today for December 12, 2025"
+CHECK_ANSWER = "D) It increases liquidity by enabling fractional ownership and global trading."
 
 # find & replace
-OLD_DATE = "December 11"
-NEW_DATE = "December 12"
+OLD_DATE = "December 12"
+NEW_DATE = "December 13"
 
 
 # ================ SCRAPE SITE ================
