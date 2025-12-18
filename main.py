@@ -5,7 +5,7 @@ import html
 from bs4 import BeautifulSoup
 
 # ================= CONFIG =================
-WP_URL = "https://blog.mexc.com/wp-json/wp/v2/posts"
+WP_URL = "https://blog.mexc.fm/wp-json/wp/v2/posts"
 WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
 POST_ID = 309436  # ID bài Spur Protocol
@@ -123,7 +123,8 @@ def update_post_after_h2(target_h2_text, question, answer):
     a_tag.strong.string = f"Correct Answer: {answer}"
 
     # 5. Chèn Q/A sau H2
-    h2_tag.insert_after(p_tag)
+    h2_tag.insert_after(a_tag)
+    h2_tag.insert_after(q_tag)
 
     new_content = str(soup)
     print("[+] New content length:", len(new_content))
