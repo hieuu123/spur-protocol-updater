@@ -1,6 +1,7 @@
 import base64
 import os
 import requests
+import html
 from bs4 import BeautifulSoup
 
 # ================= CONFIG =================
@@ -72,39 +73,54 @@ def update_post_after_h2(target_h2_text, question, answer):
     soup = BeautifulSoup(old_content, "html.parser")
 
     # 2. Tìm <h2> có text khớp
-    h2_tag = soup.find("h2", string=lambda t: t and target_h2_text in t)
+    def normalize(text):
+        return (
+            html.unescape(text)
+            .lower()
+            .replace("’", "'")
+            .replace("–", "-")
+            .replace("—", "-")
+            .replace("\xa0", " ")
+            .strip()
+        )
+        
+    h2_tag = None
+    for h2 in soup.find_all("h2"):
+        h2_norm = normalize(h2.get_text())
+        if "spur protocol quiz answers today" in h2_norm:
+            h2_tag = h2
+            break
+    
     if not h2_tag:
-        print("❌ Không tìm thấy H2 phù hợp")
+        print("❌ Không tìm thấy H2 quiz")
         print("Rendered snippet:", old_content[:4000])
         return
 
-    # 3. Xóa <p> sau H2 (hiện chứa Q/A cũ)
-    next_tag = h2_tag.find_next_sibling()
+    # 3. Xóa Question + Answer cũ
     removed = 0
-    while next_tag and next_tag.name == "p":
-        nxt = next_tag.find_next_sibling()
-        next_tag.decompose()
-        next_tag = nxt
-        removed += 1
-    print(f"[+] Removed {removed} <p> cũ sau H2")
+    node = h2_tag.find_next_sibling("p")
+    
+    while node:
+        text = node.get_text(" ", strip=True).lower()
+    
+        if text.startswith(("question:", "correct answer:")):
+            next_node = node.find_next_sibling("p")
+            node.decompose()
+            removed += 1
+            node = next_node
+            continue
+        break
+    
+    print(f"[+] Removed {removed} quiz <p>")
 
-    # 4. Tạo đoạn Q/A mới
-    p_tag = soup.new_tag("p")
-    p_tag["style"] = "font-size:17px"
-
-    strong_q = soup.new_tag("strong")
-    strong_q.string = "Question:"
-    p_tag.append(strong_q)
-    p_tag.append(f" {question}\n")
-
-    strong_a_label = soup.new_tag("strong")
-    strong_a_label.string = "Correct Answer:"
-    p_tag.append(strong_a_label)
-    p_tag.append(" ")
-
-    strong_a = soup.new_tag("strong")
-    strong_a.string = answer
-    p_tag.append(strong_a)
+    # 4. Tạo Q/A mới
+    q_tag = soup.new_tag("p")
+    q_tag.append(soup.new_tag("strong"))
+    q_tag.strong.string = f"Question: {question}"
+    
+    a_tag = soup.new_tag("p")
+    a_tag.append(soup.new_tag("strong"))
+    a_tag.strong.string = f"Correct Answer: {answer}"
 
     # 5. Chèn Q/A sau H2
     h2_tag.insert_after(p_tag)
