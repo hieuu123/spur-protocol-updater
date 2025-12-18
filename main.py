@@ -75,7 +75,7 @@ def update_post_after_h2(target_h2_text, question, answer):
     h2_tag = soup.find("h2", string=lambda t: t and target_h2_text in t)
     if not h2_tag:
         print("❌ Không tìm thấy H2 phù hợp")
-        print("Rendered snippet:", old_content[:400])
+        print("Rendered snippet:", old_content[:4000])
         return
 
     # 3. Xóa <p> sau H2 (hiện chứa Q/A cũ)
