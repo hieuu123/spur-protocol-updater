@@ -8,9 +8,9 @@ from bs4 import BeautifulSoup
 WP_URL = "https://blog.mexc.fm/wp-json/wp/v2/posts"
 WP_USERNAME = os.getenv("WP_USERNAME")
 WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
-POST_ID = 328011  # ID bài Spur Protocol
+POST_ID = 328068  # ID bài Spur Protocol
 TARGET_H2_TEXT = "Spur Protocol Quiz Answers Today - December 19, 2025"
-CHECK_ANSWER = "C) To hold pending transactions before confirmation."
+CHECK_ANSWER = "C) Temporary forks or chain splits."
 
 # ================ SCRAPE SITE ================
 def scrape_quiz_site():
